@@ -2,7 +2,8 @@
 include('db_conn.php');
 $email = $_POST['username'];
 $password = $_POST['password'];
-echo $username;
+$password = substr(sha1($password),5,6);
+echo $email;
 echo $password;
 $query = "SELECT * FROM user_detail WHERE email='$email' AND password='$password'";
 echo $query;

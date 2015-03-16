@@ -1,23 +1,24 @@
 ﻿<?php
 include('db_conn.php');
 session_start('login');
+if ((isset($_SESSION['email']) )) {
 
-if (!(isset($_SESSION['email']) && $_SESSION['email'] != '')) {
+header ("Location: play.php");
 
-header ("Location: index.php");
+}
 
-}?>
+?>
 <!DOCTYPE html>
 <html>
 	
 	<head>
 		
-		<title>Mathrix'15</title>
+		<title>OMG|Mathrix'15</title>
 
 		<!-- meta tags collection -->
-		<meta name="description" content="A life worth sharing. Your best moments and achievements all in one place. Travels, projects, jobs, life goals, events and more. Sign up for beta.">
-		<meta name="keywords" content="social network, social, life, awesome, memories, achievements, tracking, life goals">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta property="og:title" content="OMG|Mathrix'15" /> 
+		<meta property="og:url" content="http://omg.mathrix.in" /> 
+		<meta property="og:image" content="http://omg.mathirx.in/materialize/mathrix_logo.png" />
 		<meta charset="UTF-8">
 		
 		<!-- FAVICON -->
@@ -35,9 +36,83 @@ header ("Location: index.php");
 		<script>
 			   $(document).ready(function(){
     			// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+			    
 			    $('.modal-trigger').leanModal();
-			  });
-			  
+			    $('.signin_submit').click(function(){
+			    	if($('#username').val()== "" )
+			    	{
+			    		$('#username').addClass("invalid");
+			    		$('#username').removeClass("validate");
+			    		if($('#password').val()== "" )
+				    	{
+				    		$('#password').addClass("invalid");
+				    		$('#password').removeClass("validate");
+				    		
+				    		
+				    	}
+			    		
+			    	}
+			    	else if($('#password').val()== "" )
+				    	{
+				    		$('#password').addClass("invalid");
+				    		$('#password').removeClass("validate");
+				    		
+				    		
+				    	}
+			    	else {
+			    		
+			    		$('#signin_form').submit();
+			    	}
+			    		
+			    });
+
+			     $('.reg_submit').click(function(){
+			    	if($('#username1').val()== "" )
+			    	{
+			    		$('#username1').addClass("invalid");
+			    		$('#username1').removeClass("validate");
+			    		
+			    	}
+			    	else if($('#email').val()== "" )
+			    	{
+			    		$('#email').addClass("invalid");
+			    		$('#email').removeClass("validate");
+			    	}
+			    	else if($('#password1').val()== "" )
+			    	{
+			    		$('#password1').addClass("invalid");
+			    		$('#password1').removeClass("validate");
+			    		
+			    	}
+			    	
+			    	else {
+			    		var sEmail = $('#email').val();
+						if (validateEmail(sEmail)) {
+							if($('#password1').val()== $('#c_password').val()  )
+								$('#registration_form').submit();
+							else
+								alert("password mismatch")
+						}
+						else {
+							alert('Invalid Email Address');
+							e.preventDefault();
+						}
+			    		
+			    	}
+			    		
+			    	});
+			
+			  	});
+
+			  function validateEmail(sEmail) {
+				var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+				if (filter.test(sEmail)) {
+				return true;
+				}
+				else {
+				return false;
+				}
+				}
 
 		</script>
 
@@ -52,13 +127,14 @@ header ("Location: index.php");
 		      <div class="row">
 		      	<form action="signin.php" method="post" id="signin_form">
 		      		<center><h3>LOGIN</h3></center>
+		      		
 			      <div class="input-field col s12">
-			      	<i class="mdi-action-account-circle prefix"></i>
-			        <input id="username" name="username" type="text" class="validate">
-			        <label for="username">Username</label>
+			      	<i class="mdi-action-perm-identity prefix"></i>
+			        <input required id="username" name="username" type="text" class="validate">
+			        <label for="username">E-mail ID</label>
 			      </div>
 			      <div class="input-field col s12">
-			      	<i class="mdi-action-account-circle prefix"></i>
+			      	<i class="mdi-action-lock prefix"></i>
 			        <input id="password" name="password" type="password" class="validate">
 			        <label for="password">Password</label>
 			      </div>
@@ -66,8 +142,9 @@ header ("Location: index.php");
 			    </div>
 		    </div>
 		    <div class="modal-footer">
-		      <a class="waves-effect waves-purple btn-flat modal-action modal-close" onclick="document.getElementById('signin_form').submit();">Submit</a>
-		      <a id="submit" class="waves-effect waves-blue btn btn-flat modal-trigger" href="#modal2">Sign Up/Register<i class="mdi-action-thumb-up right"></i></a>
+		      <a class="waves-effect waves-purple btn modal-action signin_submit" >Submit<i class="mdi-navigation-arrow-forward right"></i></a>
+		      <a id="submit" class="waves-effect waves-blue btn modal-trigger left" href="#modal2">Sign Up/Register<i class="mdi-navigation-arrow-forward right"></i></a>
+
 
 		    </div>
 		  </div>
@@ -80,21 +157,21 @@ header ("Location: index.php");
 		      		<center><h3>REGISTER</h3></center>
 			      <div class="input-field col s12">
 			      	<i class="mdi-action-account-circle prefix"></i>
-			        <input id="username" name="username" type="text" class="validate">
-			        <label for="username">Username</label>
+			        <input id="username1" name="username1" type="text" class="validate">
+			        <label for="username1">Name</label>
 			      </div>
 			      <div class="input-field col s12">
-			      	<i class="mdi-action-account-circle prefix"></i>
+			      	<i class="mdi-content-mail prefix"></i>
 			        <input id="email" name="email" type="text" class="validate">
 			        <label for="email">E-Mail</label>
 			      </div>
 			      <div class="input-field col s12">
-			      	<i class="mdi-action-account-circle prefix"></i>
-			        <input id="password" name="password" type="password" class="validate">
-			        <label for="password">Password</label>
+			      	<i class="mdi-action-lock prefix"></i>
+			        <input id="password1" name="password1" type="password" class="validate">
+			        <label for="password1">Password</label>
 			      </div>
 			      <div class="input-field col s12">
-			      	<i class="mdi-action-account-circle prefix"></i>
+			      	<i class="mdi-action-lock prefix"></i>
 			        <input id="c_password" name="c_password" type="password" class="validate">
 			        <label for="c_password">Confirm Password</label>
 			      </div>
@@ -103,7 +180,7 @@ header ("Location: index.php");
 		    </div>
 		    </form>
 		    <div class="modal-footer">
-		      <a class="waves-effect waves-purple btn-flat modal-action modal-close" onclick="document.getElementById('registration_form').submit();">Submit</a>
+		      <a class="waves-effect waves-purple btn modal-action reg_submit" >Submit</a>
 		    </div>
 		  </div>
 
@@ -113,10 +190,17 @@ header ("Location: index.php");
 				<div class="logo"></div>
 				<ul class="left"><li><span><h4>MATHRIX</h4></span></li></ul>
 				<ul class="right">
-					<li><span>Play</span></li>
-					<li><span>Rule</span></li>
-					<li><span>FAQ</span></li>
-					<li><span>Contact</span></li>
+					<li><span><a id="submit" class="modal-trigger" href="#modal1">Play</a></span></li>
+					<li><span><a href="leaderboard.php">Leaderboard</a></span></li>
+					<li><span><a href="rules.php">Rules</a></span></li>
+					<li><span><a href="contact.php">Contact</a></span></li>
+					<li><span><?php
+								if (!(isset($_SESSION['email']))) {
+									echo '<a href="index.php">Login</a></span></li>';
+								}
+								else
+									echo '<a href="logout.php">Logout</a></span></li>';
+								?>
 				</ul>
 			</div>
 		</nav>
@@ -129,8 +213,8 @@ header ("Location: index.php");
 				<br><br>
 				<img src="materialize/mathrix_logo.png" class="logo" />
 				<header>
-					<h1>Riddles of the Sphinx</h1>
-					<h2>The power of brains</h2>
+					<h1>OMG</h1>
+					<h2>The power of brains</h2><br>
 				</header>
 				<a id="submit" class="waves-effect waves-purple btn btn-custom modal-trigger" href="#modal1">Play<i class="mdi-action-thumb-up right"></i></a>
 			</div>
@@ -138,16 +222,6 @@ header ("Location: index.php");
 		</section>	
 
 		
-
-
-<!--<footer class="page-footer">	
-          <div class="footer-copyright">
-            <div class="container">
-            © 2014 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
-          </di
-        </footer>-->
 
 		
 	</body>	

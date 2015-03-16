@@ -1,4 +1,8 @@
 <?php
+$mysql_host = "mysql3.000webhost.com";
+$mysql_database = "a9601090_mathrix";
+$mysql_user = "a9601090_root";
+$mysql_password = "Dharmesh07";
 $host="localhost";
 $user="root";
 $pass="";
@@ -14,3 +18,4 @@ catch(Exception $e)
 }
 
 ?>
+

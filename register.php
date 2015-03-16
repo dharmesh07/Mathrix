@@ -1,10 +1,10 @@
 <?php
 include('db_conn.php');
-$username = $_POST['username'];
+$username = $_POST['username1'];
 $email = $_POST['email'];
-$password = $_POST['password'];
+$password = $_POST['password1'];
 $level = 1 ; 
-
+$password = substr(sha1($password),5,6);
 $query = "INSERT INTO user_detail(`name`,`email`,`password`,`level`) VALUES('$username' , '$email' , '$password' ,$level)";
 echo $query;
 $result= mysql_query($query);

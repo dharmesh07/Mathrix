@@ -1,7 +1,7 @@
 <?php
 include('db_conn.php');
 session_start('login');
-if (!(isset($_SESSION['email']) || $_SESSION['email'] != '')) {
+if (!(isset($_SESSION['email']) )) {
 
 header ("Location: index.php");
 
@@ -11,12 +11,12 @@ header ("Location: index.php");
 	
 	<head>
 		
-		<title>Mathrix'15</title>
+		<title>OMG|Mathrix'15</title>
 
 		<!-- meta tags collection -->
-		<meta name="description" content="A life worth sharing. Your best moments and achievements all in one place. Travels, projects, jobs, life goals, events and more. Sign up for beta.">
-		<meta name="keywords" content="social network, social, life, awesome, memories, achievements, tracking, life goals">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta property="og:title" content="OMG" /> 
+		<meta property="og:url" content="http://omg.mathrix.in" /> 
+		<meta property="og:image" content="http://omg.mathirx.in/materialize/mathrix_logo.png" />
 		<meta charset="UTF-8">
 		
 		<!-- FAVICON -->
@@ -33,45 +33,44 @@ header ("Location: index.php");
 		<link rel='stylesheet' type='text/css' href="materialize/css/style.min.css" />
 
 		<script>
-$(document).ready(function() 
-{
-$("#loader").hide();
-$('#submit').click(function()
-{
-var answer=$("#answer").val();
-var dataString = 'answer='+answer;
-$.ajax({
-type: "POST",
-url: "check_answer.php",
-data: dataString,
-cache: false,
-beforeSend: function(){ $("#loader").show();},
-success: function(data){
-if(data=='true')
-{
-$('#modal2').openModal();
-//$("#loader").hide();
-//
-//or
-//window.location.href = "play.php";
-}
-else
-{
-$('#modal1').openModal();
-//$("#loader").hide();
-}
-}
-});
-return false;
-});
-$('#continue').click(function(){
-	location.reload();
-})
-$('#next').click(function(){
-	location.reload();
-})
-});
-</script>
+		$(document).ready(function() 
+		{
+			$("#loader").hide();
+			$('#submit').click(function()
+			{
+			globalas="";
+			var answer=$("#answer").val();
+			answer = answer.replace(/ /g,'');
+			var dataString = 'answer='+answer;
+			 console.log(answer);
+				$.ajax({
+				type: "POST",
+				url: "check_answer.php",
+				data: dataString,
+				cache: false,
+				beforeSend: function(){ $("#loader").show();},
+				success: function(data){
+					globalas=JSON.parse(data);
+					if(globalas["status"] == "true")
+					{
+					$('#modal2').openModal();
+					}
+					else
+					{
+											
+					$('#modal1').openModal();
+					}
+					}
+				});
+			});
+			$('#continue').click(function(){
+				location.reload();
+			})
+			$('#next').click(function(){
+				location.reload();
+			})
+		});
+			</script>
 
 	</head>
 
@@ -83,11 +82,17 @@ $('#next').click(function(){
 				<div class="logo"></div>
 				<ul class="left"><li><span><h4>MATHRIX</h4></span></li></ul>
 				<ul class="right">
-					<li><span>Play</span></li>
-					<li><span>Rule</span></li>
-					<li><span>FAQ</span></li>
-					<li><span>Contact</span></li>
-					<li><span><a href="logout.php">Logout</a></span></li>
+					<li><span><a href="play.php">Play</a></span></li>
+					<li><span><a href="leaderboard.php">Leaderboard</a></span></li>
+					<li><span><a href="rules.php">Rules</a></span></li>
+					<li><span><a href="contact.php">Contact</a></span></li>
+					<li><span><?php
+								if (!(isset($_SESSION['email']) )) {
+									echo '<a href="index.php">Login</a></span></li>';
+								}
+								else
+									echo '<a href="logout.php">Logout</a></span></li>';
+								?>
 				</ul>
 			</div>
 		</nav>
@@ -97,12 +102,12 @@ $('#next').click(function(){
 		    <div class="modal-content">
 		      <div class="row">
 		      	<center>
-		      		That's almost close enough..!!! Think Harder.. Better Luck Next Time
+		      		Think Hard.. Better Luck Next Time
 			    </center>
 		    </div>
 		</div>
 		<div class="modal-footer">
-		     <a id="continue" class="waves-effect waves-blue btn btn-flat modal-trigger" href="#">Try Again<i class="mdi-action-thumb-up right"></i></a>
+		     <a id="continue" class="waves-effect waves-blue btn modal-trigger modal-close" href="#">Try Again<i class="mdi-action-thumb-up right"></i></a>
 		 </div>
 		</div>
 
@@ -116,50 +121,59 @@ $('#next').click(function(){
 		    </div>
 		</div>
 		<div class="modal-footer">
-		     <a id="next" class="waves-effect waves-blue btn btn-flat modal-trigger" href="#">Continue<i class="mdi-action-thumb-up right"></i></a>
+		     <a id="next" class="waves-effect waves-blue btn modal-trigger" href="#">Continue<i class="mdi-action-thumb-up right"></i></a>
 		 </div>
 		</div>		
-		
+		<?php
+		$query ="SELECT * FROM user_detail WHERE email='".$_SESSION['email']."'";
+		$result = mysql_query($query);
+		$row = mysql_fetch_array($result);
+		$query2 ="SELECT * FROM level_detail WHERE level='".$row['level']."'";
+		$result2 = mysql_query($query2);
+		$row2 = mysql_fetch_array($result2);
+		if($row['level']<3){
+		?>
 		<!-- INTRO -->
-		<section id="intro">
-			<div class="container-custom">
-				
+		<section id="intro" >
+			<div class="container-custom" style="left:45%">				
 				<br><br>
-				<img class="materialboxed" data-caption="A picture of some deer and tons of trees" width="250" style="
-    				box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.32), 0 15px 35px 0px rgba(0, 0, 0, 0.41); */;"
+				<br><br>
+				<img class="tooltipped" data-position="right" data-delay="50" data-tooltip="<?php echo $row2['clue'];?>" width="500px" height="250px" style="box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.32), 0 15px 35px 0px rgba(0, 0, 0, 0.41);"
 				src='img/<?php 
-				$query ="SELECT * FROM user_detail WHERE email='".$_SESSION['email']."'";
-				$result = mysql_query($query);
-				$row = mysql_fetch_array($result);
 				echo $row['level'];?>.png'>
 				<header>
-					<form action="check_answer.php" method="post" id="poss">
-					<div class="input-field col s12">
-			      	<i class="mdi-action-account-circle prefix"></i>
-			        <input id="answer" name="answer" type="text">
-			        <label for="answer">Answer</label>
+					<br>
+					<div class="input-field col s12" style="left:30%">
+			      	<i class="mdi-image-tag-faces prefix" style="color: #f5f5f5;"></i>
+			        <input id="answer" name="answer" type="text" style="border-bottom: 1px solid #f5f5f5;color: #f5f5f5;">
+			        <label for="answer" style="color: #f5f5f5;">Answer</label>
 			      </div>
-			      </form>
 				</header>
 				<div id="loader" class="progress">
 				    <div class="indeterminate"></div>	  
 			    </div>
-				<a id="submit" class="waves-effect waves-purple btn btn-custom" href="#modal1" >Submit<i class="mdi-action-thumb-up right"></i></a>
+				<a style="left:35%" id="submit" class="waves-effect waves-purple btn btn-custom" href="#modal1" >Submit<i class="mdi-action-thumb-up right"></i></a>
+			</div>
+			
+		</section>	
+		<?php
+		}
+		else{
+?>
+		<section id="intro" >
+			<div class="container-custom" style="left:50%">				
+				<br><br>
+				<br><br>
+				<header>
+					Next Levels will be updated soon. Check this Space .
+				</header>
 			</div>
 			
 		</section>	
 
-		
 
 
-<!--<footer class="page-footer">	
-          <div class="footer-copyright">
-            <div class="container">
-            © 2014 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
-          </di
-        </footer>-->
+<?php		}?>
 
 		
 	</body>	

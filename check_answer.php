@@ -5,6 +5,7 @@ if(isset($_POST['answer']))
 {
 // username and password sent from Form
 $answer=mysql_real_escape_string($_POST['answer']); 
+$answer = strtolower($answer);
 }
 $email = $_SESSION['email'];
 $query = "SELECT * FROM user_detail WHERE email='$email'";
@@ -16,7 +17,7 @@ $result2= mysql_query($query2);
 $row = mysql_fetch_array($result2);
 if($row)
 {
-	echo 'true';
+	echo json_encode(array('status' => "true"));
 	$new_level = $level + 1;
 	$update_query = "UPDATE user_detail SET level = $new_level WHERE email = '$email'";
 	mysql_query($update_query);
@@ -27,6 +28,6 @@ else
 {
 	$insert_query = "INSERT INTO logs(`email`,`level`,`flag`) VALUES ('$email',$level,1)";
 	mysql_query($insert_query);
-	echo 'false';
+	echo json_encode(array('status' => "false"));
 }
 ?>
