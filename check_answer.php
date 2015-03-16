@@ -17,16 +17,17 @@ $result2= mysql_query($query2);
 $row = mysql_fetch_array($result2);
 if($row)
 {
-	echo json_encode(array('status' => "true"));
 	$new_level = $level + 1;
 	$update_query = "UPDATE user_detail SET level = $new_level WHERE email = '$email'";
 	mysql_query($update_query);
-	$insert_query = "INSERT INTO logs(`email`,`level`,`flag`) VALUES ('$email',$level,0)";
+	$insert_query = "INSERT INTO logs(`email`,`level`,`flag`) VALUES ('$email',$level,'$answer')";
+	error_log($insert_query);
 	mysql_query($insert_query);
+	echo json_encode(array('status' => "true"));
 }
 else
 {
-	$insert_query = "INSERT INTO logs(`email`,`level`,`flag`) VALUES ('$email',$level,1)";
+	$insert_query = "INSERT INTO logs(`email`,`level`,`flag`) VALUES ('$email',$level,'$answer')";
 	mysql_query($insert_query);
 	echo json_encode(array('status' => "false"));
 }

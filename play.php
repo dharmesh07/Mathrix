@@ -131,7 +131,7 @@ header ("Location: index.php");
 		$query2 ="SELECT * FROM level_detail WHERE level='".$row['level']."'";
 		$result2 = mysql_query($query2);
 		$row2 = mysql_fetch_array($result2);
-		if($row['level']<3){
+		if($row['level']<14){
 		?>
 		<!-- INTRO -->
 		<section id="intro" >

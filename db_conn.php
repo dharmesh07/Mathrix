@@ -5,7 +5,7 @@ $mysql_user = "a9601090_root";
 $mysql_password = "Dharmesh07";
 $host="localhost";
 $user="root";
-$pass="";
+$pass="poiasdmnb943";
 $db_name="mathrix";
 try
 {

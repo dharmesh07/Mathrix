@@ -80,7 +80,7 @@ header ("Location: index.php");
 			        <tbody>
 			        
 					<?php
-						$query ="SELECT * FROM `user_detail` ORDER BY `level` DESC, `timestamp` DESC";
+						$query ="SELECT * FROM `user_detail` ORDER BY `level` DESC, `timestamp` ASC";
 						$result = mysql_query($query);
 						while($row = mysql_fetch_array($result))
 						{
